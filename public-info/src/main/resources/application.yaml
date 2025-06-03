@@ -3,3 +3,70 @@ spring:
     name: public-info-app
   profiles:
     active: local
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        default_schema: public_info
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    admin:
+      auto-create: true
+      properties:
+        auto.create.topics.enable: true
+    consumer:
+      enable-auto-commit: false
+      auto-offset-reset: latest
+      group-id: ${KAFKA_CONSUMER_GROUP:public-info-group}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "com.bank.publicinfo.dto"
+        spring.json.value.default.type: "com.bank.publicinfo.dto.BankDetailsDto"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    listener:
+      ack-mode: MANUAL_IMMEDIATE
+    topics:
+      partitions: 1
+      replicas: 1
+      retention:
+        ms:
+          default: 604800000  # 7 дней
+          short: 3600000     # 1 час
+      bank:
+        create: public-info.bank.create
+        update: public-info.bank.update
+        delete: public-info.bank.delete
+        get: public-info.bank.get
+        response: public-info.bank.response
+  logging:
+    level:
+      org.springframework: DEBUG
+      org.hibernate.SQL: DEBUG
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+      com.bank.publicinfo: DEBUG
+server:
+  port: ${SERVER_PORT:8091}
+  servlet:
+    context-path: /api/public-info
+management:
+  server:
+    port: ${MANAGEMENT_PORT:8190}
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
