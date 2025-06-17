@@ -15,4 +15,11 @@ public class EntityNotFoundException extends RuntimeException {
         super(message + " ID: " + entityId);
         this.entityId = entityId;
     }
+    /**
+     * Возвращает идентификатор сущности, которая не была найдена.
+     * @return идентификатор сущности
+     */
+    public Long getEntityId() {
+        return entityId;
+    }
 }
