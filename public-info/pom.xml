@@ -28,6 +28,7 @@
         <junit.jupiter.version>5.11.4</junit.jupiter.version>
         <junit.platform.version>1.11.4</junit.platform.version>
         <jacoco.plugin.version>0.8.11</jacoco.plugin.version>
+        <mockito.version>5.14.2</mockito.version>
     </properties>
 
     <dependencies>
@@ -138,6 +139,31 @@
             <version>${junit.platform.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -187,6 +213,13 @@
                         </goals>
                     </execution>
                 </executions>
+                <configuration>
+                    <excludes>
+                        <exclude>com/bank/publicinfo/audit/Auditable.class</exclude>
+                        <exclude>com/bank/publicinfo/entity/AuditableEntity.class</exclude>
+                        <exclude>**/dto/**/*.class</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>
