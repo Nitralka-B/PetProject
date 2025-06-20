@@ -14,7 +14,7 @@ management:
         include: '*'
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres
+    url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: password
   liquibase:
@@ -22,5 +22,28 @@ spring:
     change-log: db/changelog/db.changelog-master.yaml
     enabled: true
     drop-first: false
+  kafka:
+    topics:
+      profile-create: "profile.create"
+      profile-update: "profile.update"
+      profile-get: "profile.get"
+      profile-delete: "profile.delete"
+      profile-requestget: "profile.requestGet"
+      profile-getPrincipal: "profile.getPrincipal"
+      profile-errors: "profile.errors"
+      partitions: 1
+      replicas: 1
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.date-format: yyyy-MM-dd HH:mm:ss
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.value.defoult.type: com.bank.profile.DTO
+        spring.json.trusted.packages: com.bank.profile.DTO
+      auto-offset-reset: earliest
   application:
     name: profile-app
