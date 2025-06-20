@@ -3,3 +3,26 @@ spring:
     name: authorization-app
   profiles:
     active: local
+  kafka:
+    bootstrap-servers: localhost:9092
+    partitions: 3
+    replicas: 1
+    topics:
+      user-create: "user.create"  # Топик для создания пользователя
+      user-delete: "user.delete" # Топик для удаления пользователя
+      user-update: "user.update" # Топик для обновления пользователя
+      user-get: "user.get" # Топик для получения записей
+    listener:
+      missing-topics-fatal: false  # Игнорировать, если топик не существует (полезно для тестов)
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false  # Не добавлять заголовки с типом (упрощает десериализацию)
+    consumer:
+      group-id: "user-service-group"  # Группа для consumer'ов
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: earliest  # Читать с начала, если offset не найден
+      properties:
+        spring.json.trusted.packages: "com.bank.authorization.dto"  # Разрешить десериализацию любых пакетов
