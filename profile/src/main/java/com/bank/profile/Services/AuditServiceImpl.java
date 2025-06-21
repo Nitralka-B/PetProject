@@ -89,20 +89,17 @@ public class AuditServiceImpl implements AuditService {
                 throw new NotAuthorizedException(NOT_AUTHORIZED);
             }
             final String username = auditPrincipalConsumer.getPrincipal().getUsername();
-
             final Long entityId = extractIdFromEntity(newEntity);
             if (entityId == null) {
                 log.error(ENTITY_ID_NULL);
                 throw new AuditException("Cannot extract ID from entity");
             }
-
             final Audit creationAudit = findCreationAudit(entityType, entityId);
             if (creationAudit == null) {
                 log.error("Creation Audit is null!");
                 throw new AuditException(String.format(
                         "Creation audit not found for entityType=%s, id=%d", entityType, entityId));
             }
-
             final Audit audit = new Audit();
             audit.setEntityType(entityType);
             audit.setOperationType(operationType.name());
@@ -112,7 +109,6 @@ public class AuditServiceImpl implements AuditService {
             audit.setModifiedAt(LocalDateTime.now());
             audit.setEntityJson(creationAudit.getEntityJson());
             audit.setNewEntityJson(objectMapper.writeValueAsString(newEntity));
-
             auditRepository.save(audit);
         } catch (JsonProcessingException e) {
             log.error("Error while updating entity {}", entityType, e);
