@@ -45,7 +45,7 @@ public class KafkaUserConsumer {
     public void handleUserCreate(@Valid @Payload UserCreateRequest request) {
 
         handler.processAdminAction(request, null, req -> {
-            UserDto userDto = userService.createUser(req);
+            final UserDto userDto = userService.createUser(req);
             log.info("User created. ID: {}, profileId: {}",
                     userDto.getId(), userDto.getProfileId());
         });
@@ -94,7 +94,7 @@ public class KafkaUserConsumer {
     public UserGetResponse handleUserGetRequest(@Valid @Payload UserGetRequest request,
                                                 @Header("Authorization") String token) {
         return handler.processAdminActionWithResult(request, token, req -> {
-            UserGetResponse response = userService.getAllUsers(req);
+            final UserGetResponse response = userService.getAllUsers(req);
             KafkaMessageHandler.logResponse("users", response.getUsers());
             return response;
         });

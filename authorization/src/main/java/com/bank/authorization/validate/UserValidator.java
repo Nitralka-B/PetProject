@@ -25,13 +25,13 @@ public class UserValidator {
             throw new ValidationException("PASSWORD_REQUIRED", "Пароль обязателен");
         }
         if (password.length() < MIN_PASSWORD_SIZE || password.length() > MAX_PASSWORD_SIZE) {
-            throw new ValidationException("INVALID_PASSWORD_LENGTH","Пароль должен содержать от 8 до 64 символов");
+            throw new ValidationException("INVALID_PASSWORD_LENGTH", "Пароль должен содержать от 8 до 64 символов");
         }
     }
 
     public void validateRole(Role role) {
         if (role == null) {
-            throw new ValidationException("ROLE_REQUIRED","Роль должна быть указана");
+            throw new ValidationException("ROLE_REQUIRED", "Роль должна быть указана");
         }
     }
 }

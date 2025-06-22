@@ -2,7 +2,9 @@ package com.bank.authorization.service;
 
 import com.bank.authorization.dto.AuditDto;
 import com.bank.authorization.entity.Audit;
+
 import static com.bank.authorization.entity.OperationType.UPDATE;
+
 import com.bank.authorization.exception.ValidationException;
 import com.bank.authorization.mapper.AuditMapper;
 import com.bank.authorization.repository.AuditRepository;
@@ -45,11 +47,11 @@ public class AuditServiceImpl implements AuditService {
             audit.setModifiedBy(securityContextUtil.getCurrentUsername());
             audit.setModifiedAt(OffsetDateTime.now());
         }
-       try {
-           auditValidate.validate(auditMapper.toDto(audit));
-       } catch (ValidationException ex) {
-           log.error("Валидация аудита нарушена: {}", ex.getMessage());
-       }
+        try {
+            auditValidate.validate(auditMapper.toDto(audit));
+        } catch (ValidationException ex) {
+            log.error("Валидация аудита нарушена: {}", ex.getMessage());
+        }
 
         auditRepository.save(audit);
 

@@ -21,8 +21,7 @@ public class UpdateAuditMapper {
     private final SecurityContextUtil securityContextUtil;
     private final Clock clock;
 
-    public AuditDto map(UserDto oldUser, User updatedUser)
-    {
+    public AuditDto map(UserDto oldUser, User updatedUser) {
         final UserDto newUserDto = mapToDto(updatedUser);
 
         return AuditDto.builder()

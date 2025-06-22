@@ -35,23 +35,7 @@ import java.util.Arrays;
 @RequiredArgsConstructor
 public class KafkaConfig {
 
-    @Bean
-    public CommonErrorHandler commonErrorHandler(KafkaTemplate<String, Object> template) {
-        return new DefaultErrorHandler(
-                new DeadLetterPublishingRecoverer(template),
-                new FixedBackOff(1000, 3)
-        );
-    }
-
-    @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, Object> containerFactory(
-            CommonErrorHandler commonErrorHandler
-    ) {
-        ConcurrentKafkaListenerContainerFactory<String, Object> factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setCommonErrorHandler(commonErrorHandler);
-        return factory;
-    }
+    private static final int MAX_ATTEMPTS = 3;
 
     @Value("${spring.kafka.topics.user-create}")
     private String userCreateTopic;
@@ -70,6 +54,24 @@ public class KafkaConfig {
 
     @Value("${spring.kafka.replicas}")
     private short replication;
+
+    @Bean
+    public CommonErrorHandler commonErrorHandler(KafkaTemplate<String, Object> template) {
+        return new DefaultErrorHandler(
+                new DeadLetterPublishingRecoverer(template),
+                new FixedBackOff(1000, MAX_ATTEMPTS)
+        );
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Object> containerFactory(
+            CommonErrorHandler commonErrorHandler
+    ) {
+        final ConcurrentKafkaListenerContainerFactory<String, Object> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setCommonErrorHandler(commonErrorHandler);
+        return factory;
+    }
 
     @PostConstruct
     public void init() {
