@@ -1,0 +1,28 @@
+**/.DS_Store
+**/Thumbs.db
+
+**/.git/
+**/.gitignore
+**/.gitmodules
+
+**/.idea/
+**/.vscode/
+**/*.iml
+**/*.iws
+
+**/*~
+**/*.log
+**/tmp/
+
+**/target/
+!**/public-info/target/*.jar  # Разрешаем только итоговый JAR
+**/dependency-reduced-pom.xml
+**/maven-*.bat
+
+**/test-output/
+**/surefire-reports/
+**/site/
+**/apidocs/
+
+!**/public-info/src/  # Разрешаем исходники нужного модуля
+!**/pom.xml           # Обязательно для сборки
