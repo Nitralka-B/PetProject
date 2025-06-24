@@ -28,7 +28,7 @@ public class KafkaJwtValidator {
     private final JwtTokenUtils jwtTokenUtils;
 
     public void validateJwt(String token) {
-        if (token == null || !token.startsWith("Bearer ")) {
+        if (token == null || !token.startsWith(BEARER_PREFIX)) {
             log.warn("Неверный формат JWT для токена: {}", token);
             throw new SecurityException("Неверный формат JWT");
         }

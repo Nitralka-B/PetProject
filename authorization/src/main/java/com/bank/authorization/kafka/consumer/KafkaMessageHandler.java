@@ -15,26 +15,27 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class KafkaMessageHandler {
 
+    private final static int MAX_LIMIT = 3;
     private final KafkaJwtValidator kafkaJwtValidator;
 
     public <T> void processAdminAction(T request, String token, Consumer<T> action) {
         validateToken(token);
-        log.debug("Processing request: {}", request);
+        log.debug("Обработка запроса: {} для AdminAction", request);
         try {
             action.accept(request);
         } catch (Exception e) {
-            log.error("Processing error: {}", request, e);
+            log.error("Обработка ошибки: {} для AdminAction", request, e);
             throw e;
         }
     }
 
     public <T, R> R processAdminActionWithResult(T request, String token, Function<T, R> action) {
         validateToken(token);
-        log.debug("Processing request: {}", request);
+        log.debug("Обработка запроса: {} для AdminActionWithRes", request);
         try {
             return action.apply(request);
         } catch (Exception e) {
-            log.error("Processing error: {}", request, e);
+            log.error("Обработка ошибки: {} для AdminActionWithRes", request, e);
             throw e;
         }
     }
@@ -50,7 +51,7 @@ public class KafkaMessageHandler {
             log.info("{} items found. Examples: {}",
                     items.size(),
                     items.stream()
-                            .limit(3)
+                            .limit(MAX_LIMIT)
                             .map(Object::toString)
                             .collect(Collectors.joining("; ")));
         } else {

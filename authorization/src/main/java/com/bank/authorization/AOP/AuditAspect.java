@@ -30,6 +30,7 @@ import java.util.function.Supplier;
 @Slf4j
 public class AuditAspect {
 
+    private static final String AUDIT_LOG_TEMPLATE = "Логирование аудита для {}: {}";
     private final AuditService auditService;
     private final UserRepository userRepository;
     private final CreateAuditMapper createAuditMapper;
@@ -44,8 +45,8 @@ public class AuditAspect {
         log.debug("Начало аудита создания пользователя");
 
         executeAudit(() -> {
-            AuditDto auditDto = createAuditMapper.map(result);
-            log.debug("Логирование аудита для {}: {}", auditDto.getEntityType(), auditDto.getOperationType());
+            final AuditDto auditDto = createAuditMapper.map(result);
+            log.debug(AUDIT_LOG_TEMPLATE, auditDto.getEntityType(), auditDto.getOperationType());
             return auditDto;
         });
     }
@@ -63,15 +64,15 @@ public class AuditAspect {
             final User updatedUser = userRepository.findByProfileId(request.getProfileId())
                     .orElseThrow(() -> new EntityNotFoundException("Пользователь не найден"));
 
-            AuditDto auditDto = updateAuditMapper.map(oldUser, updatedUser);
-            log.info("Логирование аудита для {}: {}", auditDto.getEntityType(), auditDto.getOperationType());
+            final AuditDto auditDto = updateAuditMapper.map(oldUser, updatedUser);
+            log.info(AUDIT_LOG_TEMPLATE, auditDto.getEntityType(), auditDto.getOperationType());
             return auditDto;
         });
     }
 
     private void executeAudit(Supplier<AuditDto> auditSupplier) {
         try {
-            AuditDto auditDto = auditSupplier.get();
+            final AuditDto auditDto = auditSupplier.get();
             auditService.log(auditDto);
             log.debug("Аудит успешно завершен для {}", auditDto.getEntityType());
         } catch (Exception e) {
