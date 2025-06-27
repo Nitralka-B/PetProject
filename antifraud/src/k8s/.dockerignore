@@ -1,0 +1,4 @@
+../../../account/target/
+**/.git/
+**/.idea/
+**/k8s/
