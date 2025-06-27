@@ -149,6 +149,12 @@
             <version>2.2.224</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -169,6 +175,17 @@
                         <goals>
                             <goal>report</goal>
                         </goals>
+                        <configuration>
+                            <excludes>
+                                <exclude>**/dto/**</exclude>
+                                <exclude>**/entities/**</exclude>
+                                <exclude>**/util/*Constants*.class</exclude>
+                                <exclude>**/config/**</exclude>
+                                <exclude>**/constants/**</exclude>
+                                <exclude>**/*Exception*</exclude>
+                                <exclude>**/KafkaConstants*</exclude>
+                            </excludes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
