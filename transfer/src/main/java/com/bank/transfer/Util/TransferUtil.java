@@ -1,7 +1,12 @@
 package com.bank.transfer.Util;
 
 
-import com.bank.transfer.DTO.*;
+
+import com.bank.transfer.DTO.AccountDetailsDto;
+import com.bank.transfer.DTO.AccountTransferDto;
+import com.bank.transfer.DTO.CardTransferDto;
+import com.bank.transfer.DTO.IncomingTransferDto;
+import com.bank.transfer.DTO.PhoneTransferDto;
 import com.bank.transfer.ENUM.TransferType;
 
 import java.math.BigDecimal;

@@ -1,11 +1,12 @@
 package com.bank.transfer.entities;
 
-
-
-
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.GeneratedValue;
 import lombok.Data;
-
 
 import java.time.LocalDateTime;
 @Data

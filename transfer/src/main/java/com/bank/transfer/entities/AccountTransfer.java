@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 @Table
 public class AccountTransfer {
     @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true, nullable = false)

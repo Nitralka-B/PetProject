@@ -21,7 +21,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.bank.transfer.Util.TransferUtil.*;
+import static com.bank.transfer.Util.TransferUtil.mapToAccountDto;
+import static com.bank.transfer.Util.TransferUtil.mapToCardDto;
+import static com.bank.transfer.Util.TransferUtil.mapToPhoneDto;
+import static com.bank.transfer.Util.TransferUtil.resolveTransferType;
 
 
 @Service
