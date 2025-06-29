@@ -5,6 +5,7 @@ import static com.bank.authorization.constants.ValidationConstants.PROFILE_ID_PO
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserDeleteRequest {
 
     @NotNull(message = PROFILE_ID_NOT_NULL)

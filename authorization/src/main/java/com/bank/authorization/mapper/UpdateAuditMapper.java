@@ -2,6 +2,7 @@ package com.bank.authorization.mapper;
 
 import com.bank.authorization.dto.AuditDto;
 import com.bank.authorization.dto.UserDto;
+
 import static com.bank.authorization.entity.OperationType.UPDATE;
 import static com.bank.authorization.entity.Role.ADMIN;
 
@@ -37,7 +38,7 @@ public class UpdateAuditMapper {
                 .build();
     }
 
-    private UserDto mapToDto(User user) {
+    public UserDto mapToDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .profileId(user.getProfileId())
