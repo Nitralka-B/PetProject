@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return userRepository.findByProfileId(id)
                 .map(user -> {
-                    log.debug("Успешно загружен пользователь: {}", id);
+                    log.info("Успешно загружен пользователь: {}", id);
                     return new CustomUserDetails(user);
                 })
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден: " + id));

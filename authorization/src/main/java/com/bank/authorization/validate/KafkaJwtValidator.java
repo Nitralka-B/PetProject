@@ -1,6 +1,5 @@
 package com.bank.authorization.validate;
 
-import static com.bank.authorization.entity.Role.ADMIN;
 import com.bank.authorization.util.JwtTokenUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -54,7 +53,7 @@ public class KafkaJwtValidator {
     }
 
 
-    private void setSecurityContext(String token) {
+    public void setSecurityContext(String token) {
         final String jwt = extractJwt(token);
         final String username = jwtTokenUtils.extractUsername(jwt);
         final List<SimpleGrantedAuthority> authorities = jwtTokenUtils.getRoles(jwt).stream()
@@ -64,16 +63,6 @@ public class KafkaJwtValidator {
         SecurityContextHolder.getContext().setAuthentication(
                 new UsernamePasswordAuthenticationToken(username, null, authorities)
         );
-    }
-
-    public void validateUserAccess(String token, Long requestedProfileId) {
-        final String jwt = extractJwt(token);
-        final String username = jwtTokenUtils.extractUsername(jwt);
-        final boolean isAdmin = jwtTokenUtils.getRoles(jwt).contains(ADMIN);
-
-        if (requestedProfileId != null && !isAdmin && !username.equals(requestedProfileId.toString())) {
-            throw new AccessDeniedException("Доступ запрещён: недостаточно прав");
-        }
     }
 
     private String extractJwt(String token) {

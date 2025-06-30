@@ -120,7 +120,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.delete(user);
 
-        log.debug("Пользователь удален: ID={}, profileId={}", profileId, user.getProfileId());
+        log.info("Пользователь удален: ID={}, profileId={}", profileId, user.getProfileId());
 
     }
 

@@ -3,6 +3,7 @@ package com.bank.authorization.dto;
 import com.bank.authorization.entity.Role;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,6 +21,7 @@ import static com.bank.authorization.constants.ValidationConstants.ROLE_NOT_NULL
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserGetRequest {
 
     @NotNull(message = PROFILE_ID_NOT_NULL)

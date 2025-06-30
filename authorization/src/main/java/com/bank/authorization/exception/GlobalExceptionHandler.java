@@ -71,7 +71,7 @@ public class GlobalExceptionHandler implements KafkaListenerErrorHandler {
         log.warn("Доступ запрещен: {}", ex.getMessage());
         return new ErrorResponse(
                 "FORBIDDEN",
-                "Operation not permitted",
+                "Доступ запрещен",
                 Instant.now()
         );
     }
@@ -79,7 +79,7 @@ public class GlobalExceptionHandler implements KafkaListenerErrorHandler {
         log.error("Entity уже существует: {}", ex.getMessage());
         return new ErrorResponse(
                 "ALREADY_EXISTS",
-                "Ошибка сущности",
+                "Сущность уже существует",
                 Instant.now()
         );
     }
