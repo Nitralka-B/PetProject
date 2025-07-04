@@ -1,0 +1,10 @@
+../../../account/target/
+../../../antifraud/target/
+../../../authorization/target/
+../../../history/target/
+../../../profile/target/
+../../../public-info/target/
+../../../transfer/target/
+**/.git/
+**/.idea/
+**/k8s/ 
