@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: public-info
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: public-info
+  template:
+    metadata:
+      labels:
+        app: public-info
+    spec:
+      containers:
+        - name: public-info
+          image: public-info:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: public-info-config
+            - secretRef:
+                name: public-info-secret
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"

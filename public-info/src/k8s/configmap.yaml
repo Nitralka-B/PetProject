@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: public-info-config
+data:
+  SPRING_PROFILES_ACTIVE: "prod"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres:5432/postgres?currentSchema=public"
+  SPRING_DATASOURCE_USERNAME: "postgres"
+  SPRING_DATASOURCE_PASSWORD: "password"
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: "kafka:9092"
+  SPRING_KAFKA_ADMIN_PROPERTIES_AUTO_CREATE_TOPICS_ENABLE: "false"
+  LIQUIBASE_ENABLED: "true"
+  LIQUIBASE_CHANGE_LOG: "classpath:db/changelog/db.changelog-master.yaml"
+  LIQUIBASE_DEFAULT_SCHEMA: "public"
+  LIQUIBASE_DROP_FIRST: "false"
