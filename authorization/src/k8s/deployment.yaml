@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authorization-deployment
+  labels:
+    app: authorization
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: authorization
+  template:
+    metadata:
+      labels:
+        app: authorization
+    spec:
+      serviceAccountName: authorization-sa
+      containers:
+        - name: authorization
+          image: immortallys/authorization:latest
+          ports:
+            - containerPort: 8087
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          envFrom:
+            - configMapRef:
+                name: authorization-app
+            - secretRef:
+                name: authorization-secret
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "prod"
+            - name: SERVER_PORT
+              value: "8087"
+            - name: SERVER_SERVLET_CONTEXT_PATH
+              value: "/api/authorization"
+          livenessProbe:
+            httpGet:
+              path: /api/authorization/actuator/health
+              port: 8087
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /api/authorization/actuator/health
+              port: 8087
+            initialDelaySeconds: 15
+            periodSeconds: 10 
