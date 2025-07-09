@@ -1,5 +1,6 @@
 package com.bank.profile.Services;
 
+import com.bank.profile.DTO.PrincipalUserDto;
 import com.bank.profile.Entities.Audit;
 import com.bank.profile.Exceptions.AuditException;
 import com.bank.profile.Exceptions.NotAuthorizedException;
@@ -49,7 +50,8 @@ public class AuditServiceImpl implements AuditService {
                 throw new IllegalArgumentException(ENTITY_PARAMETERS_NULL);
             }
 
-            if (auditPrincipalConsumer.getPrincipal().getUsername() == null) {
+            final PrincipalUserDto principal = auditPrincipalConsumer.getPrincipal();
+            if (principal == null || principal.getUsername() == null) {
                 log.error(PRINCIPAL_NULL);
                 throw new NotAuthorizedException(NOT_AUTHORIZED);
             }
@@ -64,8 +66,6 @@ public class AuditServiceImpl implements AuditService {
 
             auditRepository.save(audit);
         } catch (JsonProcessingException e) {
-            log.error(e.getMessage());
-        } catch (NotAuthorizedException e) {
             log.error(e.getMessage());
         }
     }
@@ -84,7 +84,8 @@ public class AuditServiceImpl implements AuditService {
                 log.error(NULL_PARAMETERS);
                 throw new IllegalArgumentException(ENTITY_PARAMETERS_NULL);
             }
-            if (auditPrincipalConsumer.getPrincipal().getUsername() == null) {
+            final PrincipalUserDto principal = auditPrincipalConsumer.getPrincipal();
+            if (principal == null || principal.getUsername() == null) {
                 log.error(PRINCIPAL_NULL);
                 throw new NotAuthorizedException(NOT_AUTHORIZED);
             }
@@ -112,8 +113,6 @@ public class AuditServiceImpl implements AuditService {
             auditRepository.save(audit);
         } catch (JsonProcessingException e) {
             log.error("Error while updating entity {}", entityType, e);
-        } catch (NotAuthorizedException e) {
-            log.error("User not authorized {}", e.getMessage());
         } catch (AuditException e) {
             log.error("Error in audit {}", e.getMessage());
         }
@@ -122,7 +121,7 @@ public class AuditServiceImpl implements AuditService {
     /**
      * Метод отвечающий за получение id сущности
      */
-    private Long extractIdFromEntity(Object entity) {
+    Long extractIdFromEntity(Object entity) {
         try {
             final JsonNode jsonNode = objectMapper.valueToTree(entity);
             final JsonNode idNode = jsonNode.get("id");
@@ -143,7 +142,7 @@ public class AuditServiceImpl implements AuditService {
      * @param entityId
      * @return
      */
-    private Audit findCreationAudit(String entityType, Long entityId) {
+    Audit findCreationAudit(String entityType, Long entityId) {
         return auditRepository.findByEntityTypeAndOperationTypeAndJsonId(
                 entityType,
                 OperationType.CREATE.name(),
