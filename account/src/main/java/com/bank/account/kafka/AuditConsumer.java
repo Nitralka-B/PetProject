@@ -4,7 +4,6 @@ import com.bank.account.dto.AuditDto;
 import com.bank.account.entity.Audit;
 import com.bank.account.mapper.AuditMapper;
 import com.bank.account.repository.AuditRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -34,7 +33,7 @@ public class AuditConsumer {
      */
     @KafkaListener(topics = "account.audit", groupId = "audit-group")
     public void consumeAudit(AuditDto auditDto) {
-        Audit audit = auditMapper.toEntity(auditDto);
+        final Audit audit = auditMapper.toEntity(auditDto);
         log.info(">> DataBase | Adding audit {}", audit);
         auditRepository.save(audit);
     }

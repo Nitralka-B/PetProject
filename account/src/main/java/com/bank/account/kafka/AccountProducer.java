@@ -2,7 +2,6 @@ package com.bank.account.kafka;
 
 import com.bank.account.dto.AccountDto;
 import com.bank.account.util.AccountTopic;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,6 +19,8 @@ public class AccountProducer {
     private final KafkaTemplate<String, AccountDto> kafkaTemplate;
 
     public void send(AccountTopic topic, AccountDto message) {
-        log.info(">> KAFKA | Message was send" + " | ACCOUNT TOPIC | " + topic.getTopic());
+        log.info(">> KAFKA | Message was send | ACCOUNT TOPIC | {}", topic.getTopic());
         kafkaTemplate.send(topic.getTopic(), message);
-    }}
+    }
+}
+

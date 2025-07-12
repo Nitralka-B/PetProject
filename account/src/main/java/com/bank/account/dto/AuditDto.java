@@ -16,9 +16,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class AuditDto {
+    private static final int MAX_SIZE = 40;
+
     private Long id;
 
-    @Size(max = 40, message = "Max size of Entity type is 40")
+    @Size(max = MAX_SIZE, message = "Max size of Entity type is 40")
     @NotNull(message = "Entity type is necessary")
     private String entityType;
 
