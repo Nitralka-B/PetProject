@@ -23,7 +23,7 @@ public class AuditProducer {
      * @param auditDto объект аудита, содержащий информацию об изменениях в системе
      */
     public void sendAuditDto(AuditDto auditDto) {
-        log.info(">> KAFKA | Message was send" + " | AUDIT DTO | " + auditDto);
+        log.info(">> KAFKA | Message was send | AUDIT DTO | {}", auditDto);
         kafkaTemplate.send("account.audit", auditDto);
     }
 }

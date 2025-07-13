@@ -6,7 +6,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -20,11 +19,12 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "audit", schema = "account")
 public class Audit {
+    private static final int MAX_LENGTH = 40;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "entity_type", length = 40, nullable = false)
+    @Column(name = "entity_type", length = MAX_LENGTH, nullable = false)
     private String entityType;
 
     @Column(name = "operation_type", nullable = false)

@@ -1,9 +1,7 @@
 package com.bank.account.dto;
 
 import com.bank.account.validator.UniqueAccountData;
-import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +18,9 @@ import java.math.BigDecimal;
 @UniqueAccountData
 
 public class AccountDto {
+    private static final int MAX_DIGITS = 18;
+    private static final int MAX_FRAC = 2;
+
     private Long id;
 
     @NotNull(message = "Passport id is necessary")
@@ -31,7 +32,7 @@ public class AccountDto {
     @NotNull(message = "Bank details id is necessary")
     private Long bankDetailsId;
 
-    @Digits(integer = 18, fraction = 2, message = "Maximum 18 digits to the comma and 2 after")
+    @Digits(integer = MAX_DIGITS, fraction = MAX_FRAC, message = "Maximum 18 digits to the comma and 2 after")
     @NotNull(message = "Money amount is necessary")
     private BigDecimal money;
 

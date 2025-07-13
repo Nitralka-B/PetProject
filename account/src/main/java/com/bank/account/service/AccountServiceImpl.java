@@ -30,7 +30,9 @@ import java.util.Optional;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class AccountServiceImpl implements  AccountService{
+public class AccountServiceImpl implements AccountService {
+    private static final String NOT_FOUND_ERROR = "Ошибка сохранения: проверьте обязательные и уникальные поля.";
+
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
     private final AccountEventService accountEventService;
@@ -47,6 +49,7 @@ public class AccountServiceImpl implements  AccountService{
                 .map(accountMapper::toDto)
                 .orElse(null);
     }
+
     /**
      * Добавляет новую учетную запись и отправляет событие в Kafka.
      *
@@ -61,9 +64,10 @@ public class AccountServiceImpl implements  AccountService{
                     toDto(accountRepository.save(accountMapper.toEntity(accountDto))));
         } catch (DataIntegrityViolationException e) {
             log.error("Ошибка при сохранении аккаунта: {}. DTO: {}", e.getMessage(), accountDto, e);
-            throw new DataSaveException("Ошибка сохранения: проверьте обязательные и уникальные поля.");
+            throw new DataSaveException(NOT_FOUND_ERROR);
         }
     }
+
     /**
      * Обновляет существующую учетную запись и отправляет событие в Kafka.
      *
@@ -75,7 +79,7 @@ public class AccountServiceImpl implements  AccountService{
         try {
             accountRepository.findById(accountDto.getId()).ifPresentOrElse(account -> {
                 accountMapper.updateAccountFromDto(accountDto, account);
-                log.info(">> DataBase | Updating account " + accountDto.getId());
+                log.info(">> DataBase | Updating account {}", accountDto.getId());
                 accountRepository.save(account);
                 accountEventService.messageToKafka(AccountTopic.UPDATE, accountDto);
             }, () -> {
@@ -83,9 +87,10 @@ public class AccountServiceImpl implements  AccountService{
             });
         } catch (DataIntegrityViolationException e) {
             log.error("Ошибка при обновлении аккаунта: {}. DTO: {}", e.getMessage(), accountDto, e);
-            throw new DataUpdateException("Ошибка сохранения: проверьте обязательные и уникальные поля.");
+            throw new DataUpdateException(NOT_FOUND_ERROR);
         }
     }
+
     /**
      * Возвращает список всех учетных записей и отправляет событие в Kafka.
      *
@@ -93,12 +98,13 @@ public class AccountServiceImpl implements  AccountService{
      */
     @Override
     public List<AccountDto> listAccounts() {
-        accountEventService.messageToKafka(AccountTopic.GET,null);
+        accountEventService.messageToKafka(AccountTopic.GET, null);
         return accountRepository.findAll()
                 .stream()
                 .map(accountMapper::toDto)
                 .toList();
     }
+
     /**
      * Удаляет учетную запись по идентификатору и отправляет событие в Kafka.
      *
@@ -107,16 +113,16 @@ public class AccountServiceImpl implements  AccountService{
     @Transactional
     @Override
     public void deleteAccount(Long id) {
-        log.info(">> DataBase | Deleting account " + id);
-        Optional<Account> accountOpt = accountRepository.findById(id);
+        log.info(">> DataBase | Deleting account {}", id);
+        final Optional<Account> accountOpt = accountRepository.findById(id);
 
         accountOpt.ifPresentOrElse(
                 account -> {
-                    AccountDto accountDto = accountMapper.toDto(account);
+                    final AccountDto accountDto = accountMapper.toDto(account);
                     accountRepository.deleteById(id);
                     accountEventService.messageToKafka(AccountTopic.DELETE, accountDto);
-                    },
-                () -> log.error(">> DataBase | Deleting non existent account  " + id)
-                );
+                }, () -> log.error(">> DataBase | Deleting non existent account  {}", id)
+        );
     }
 }
+

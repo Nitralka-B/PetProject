@@ -1,8 +1,6 @@
 package com.bank.account.repository;
 
 import com.bank.account.entity.Account;
-import io.micrometer.observation.ObservationFilter;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;

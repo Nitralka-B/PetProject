@@ -21,15 +21,19 @@ public class UniqueAccountDataValidator implements ConstraintValidator<UniqueAcc
     public boolean isValid(AccountDto accountDto, ConstraintValidatorContext constraintValidatorContext) {
         log.info(">>>>> Вызван валидатор UniqueAccountData <<<<<");
         if (accountDto != null) {
-            AccountDto foundInDataBaseByNumber = accountRepository.findByAccountNumber(accountDto.getAccountNumber())
+            final AccountDto foundInDataBaseByNumber =
+                    accountRepository.findByAccountNumber(accountDto.getAccountNumber())
                     .map(accountMapper::toDto)
                     .orElse(null);
-            AccountDto foundInDataBaseByBank = accountRepository.findByBankDetailsId(accountDto.getBankDetailsId())
+            final AccountDto foundInDataBaseByBank =
+                    accountRepository.findByBankDetailsId(accountDto.getBankDetailsId())
                     .map(accountMapper::toDto)
                     .orElse(null);
             if (foundInDataBaseByNumber == null && foundInDataBaseByBank == null) {
                 return true;
-            } else log.error("Найден дубликат аккаунта при попытке создания!!!");
+            } else {
+                log.error("Найден дубликат аккаунта при попытке создания!!!");
+            }
         }
         return false;
     }

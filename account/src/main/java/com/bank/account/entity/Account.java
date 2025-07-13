@@ -19,6 +19,9 @@ import java.math.BigDecimal;
 @Setter
 @Table(name = "account_details")
 public class Account {
+    private static final int PRECISION = 20;
+    private static final int SCALE = 2;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,7 +35,7 @@ public class Account {
     @Column(name = "bank_details_id", unique = true)
     private Long bankDetailsId;
 
-    @Column(name = "money", precision = 20, scale = 2)
+    @Column(name = "money", precision = PRECISION, scale = SCALE)
     private BigDecimal money;
 
     @Column(name = "negative_balance")

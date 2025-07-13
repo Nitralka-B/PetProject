@@ -24,22 +24,22 @@ public interface AuditService {
      * @return список объектов AuditDto
      */
     List<AuditDto> listAudits();
-    /**
-     * Удаляет запись аудита по идентификатору.
-     *
-     * @param id идентификатор записи аудита
-     */
-    void deleteAudit(Long id);
-    /**
-     * Добавляет новую запись аудита.
-     *
-     * @param auditDto объект аудита, содержащий информацию об операции
-     */
-    void addAudit(AuditDto auditDto);
-    /**
-     * Обновляет существующую запись аудита.
-     *
-     * @param auditDto объект аудита с обновленными данными
-     */
-    void updateAudit(AuditDto auditDto);
+//    /**
+//     * Удаляет запись аудита по идентификатору.
+//     *
+//     * @param id идентификатор записи аудита
+//     */
+//    void deleteAudit(Long id);
+//    /**
+//     * Добавляет новую запись аудита.
+//     *
+//     * @param auditDto объект аудита, содержащий информацию об операции
+//     */
+//    void addAudit(AuditDto auditDto);
+//    /**
+//     * Обновляет существующую запись аудита.
+//     *
+//     * @param auditDto объект аудита с обновленными данными
+//     */
+//    void updateAudit(AuditDto auditDto);
 }
