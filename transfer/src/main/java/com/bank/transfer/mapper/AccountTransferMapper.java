@@ -9,6 +9,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface AccountTransferMapper {
+
     AccountTransfer toEntity(AccountTransferDto accountTransferDTO);
     AccountTransferDto toDTO(AccountTransfer accountTransfer);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

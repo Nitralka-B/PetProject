@@ -10,6 +10,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "spring")
 public interface CardTransferMapper {
+
     CardTransfer toEntity(CardTransferDto cardTransferDTO);
     CardTransferDto toDTO(CardTransfer cardTransfer);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

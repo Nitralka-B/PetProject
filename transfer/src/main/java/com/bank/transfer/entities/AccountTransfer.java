@@ -1,6 +1,6 @@
 package com.bank.transfer.entities;
 
-//import jakarta.persistence.*;
+
 import com.bank.transfer.Util.Constants;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

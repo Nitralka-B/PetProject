@@ -30,7 +30,7 @@ public class TransferServiceImpl implements TransferService {
     private final PhoneTransferRepository phoneTransferRepository;
     private final AccountTransferRepository accountTransferRepository;
     private final AccountDetailsService accountDetailsService;
-    private final TransferOperationService transferOperationService;
+    private final TransferOperationServiceImpl transferOperationService;
 
 
     @Override
@@ -48,19 +48,26 @@ public class TransferServiceImpl implements TransferService {
         }
 
         final TransferType type = resolveTransferType(dto.getTypeOfTransfer());
+        final Long number = dto.getNumber(); // ← добавь эту строку
 
-        final boolean exists = switch (type) {
-            case CARD -> cardTransferRepository.existsByCardNumber(dto.getNumber());
-            case ACCOUNT -> accountTransferRepository.existsByAccountNumber(dto.getNumber());
-            case PHONE -> phoneTransferRepository.existsByPhoneNumber(dto.getNumber());
-        };
+
+
+        final boolean exists = transferExists(type, number);
         if (exists) {
-            transferOperationService.updateTransfer(dto.getId(), dto, type); // ✅ теперь AOP сработает
+            transferOperationService.updateTransfer(dto.getId(), dto, type);
         } else {
-            transferOperationService.saveTransfer(dto);                      // ✅ теперь AOP сработает
+            transferOperationService.saveTransfer(dto);
         }
 
     }
+    private boolean transferExists (TransferType type, Long number) {
+        return switch (type) {
+            case CARD -> cardTransferRepository.existsByCardNumber(number);
+            case ACCOUNT -> accountTransferRepository.existsByAccountNumber(number);
+            case PHONE -> phoneTransferRepository.existsByPhoneNumber(number);
+        };
+    }
+
 
 
 }

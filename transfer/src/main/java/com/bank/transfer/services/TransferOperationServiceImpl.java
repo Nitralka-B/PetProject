@@ -30,7 +30,7 @@ import static com.bank.transfer.Util.TransferUtil.resolveTransferType;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class TransferOperationService {
+public class TransferOperationServiceImpl implements TransferOperationSevice {
     private final AccountTransferRepository accountTransferRepository;
     private final CardTransferRepository cardTransferRepository;
     private final PhoneTransferRepository phoneTransferRepository;
@@ -40,7 +40,7 @@ public class TransferOperationService {
     private final CardTransferMapper cardTransferMapper;
     private final PhoneTransferMapper phoneTransferMapper;
 
-
+    @Override
     public Object saveTransfer(IncomingTransferDto dto) {
         log.info("saveTransfer called with dto: {}", dto);
 
@@ -75,13 +75,14 @@ public class TransferOperationService {
             default -> throw new IllegalArgumentException("Unsupported transfer type");
         }
     }
-
+    @Override
     public Object updateTransfer (Long id, IncomingTransferDto dto, TransferType type) {
 
         switch (type) {
             case ACCOUNT:
                 final AccountTransferDto accountDto = mapToAccountDto(dto);
-                final AccountTransfer existingAccountTransfer = accountTransferRepository.findById(id)
+                final AccountTransfer existingAccountTransfer = accountTransferRepository
+                        .findByAccountNumber(dto.getNumber())
                         .orElseThrow(() -> new EntityNotFoundException("AccountTransfer not found"));
                 accountTransferMapper.updateEntity(accountDto, existingAccountTransfer);
                 accountTransferRepository.save(existingAccountTransfer);
@@ -96,14 +97,13 @@ public class TransferOperationService {
                                 dto.getNumber()));
 
                 cardTransferMapper.updateEntity(cardDto, existing);
-
                 cardTransferRepository.save(existing);
                 transferProducer.sendTransferToKafka(cardTransferMapper.toDTO(existing));
                 return cardTransferMapper.toDTO(existing);
 
             case PHONE:
                 final PhoneTransferDto phoneDto = mapToPhoneDto(dto);
-                final PhoneTransfer existingPhoneTransfer = phoneTransferRepository.findById(id)
+                final PhoneTransfer existingPhoneTransfer = phoneTransferRepository.findByPhoneNumber(dto.getNumber())
                         .orElseThrow(() -> new EntityNotFoundException("PhoneTransfer not found"));
 
                 phoneTransferMapper.updateEntity(phoneDto, existingPhoneTransfer);

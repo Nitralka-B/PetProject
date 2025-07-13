@@ -8,4 +8,8 @@ public interface AuditService {
     AuditDTO findFirstAudit(String entityType, Long id);
     Object findDtoById(String entityType, Long id);
 
+    AuditDTO buildAuditDtoForCreate(Long id, String entityType, Object newDto);
+
+    AuditDTO buildAuditDtoForUpdate(Long id, String entityType, Object newDto, Object oldDto, AuditDTO oldAudit);
+
 }
