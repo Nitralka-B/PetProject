@@ -176,7 +176,7 @@
 						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>1.18.24</version> <!-- та же версия, что и в deps -->
+							<version>1.18.24</version>
 						</path>
 						<path>
 							<groupId>org.mapstruct</groupId>

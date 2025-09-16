@@ -5,7 +5,7 @@
         xsi:schemaLocation="
         http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
-    <changeSet author="Sergey" id="1672954525823-1">
+    <changeSet author="Egor" id="1672954525823-1">
         <createTable remarks="переводы по номеру счёта" tableName="account_transfer">
             <column autoIncrement="true" name="id" remarks="технический идентификатор" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="account_transfer_pkey"/>
